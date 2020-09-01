@@ -1,0 +1,48 @@
+{
+  "name": "onenote-desktop",
+  "productName": "OneNote",
+  "desktopName": "OneNote",
+  "version": "0.1.3",
+  "description": "Unofficial OneNote desktop",
+  "license": "MIT",
+  "repository": "avinh/unofficial-onenote-desktop",
+  "author": {
+    "name": "Anh Vinh",
+    "email": "peca.hcmvn@gmail.com",
+    "url": "http://soociu.top"
+  },
+  "engines": {
+    "node": ">=4"
+  },
+  "electronVersion": "0.34.3",
+  "scripts": {
+    "test": "xo --space",
+    "start": "electron .",
+    "build": "npm run build:macos && npm run build:linux && npm run build:windows",
+    "build:macos": "electron-packager . --overwrite --asar --out=dist --ignore='^media$' --prune --platform=darwin --arch=x64 --icon=static/Icon.icns --app-bundle-id=com.danielchatfield.onenote-desktop --sign='Developer ID Application: Daniel Chatfield (BB2HNG5KBM)' --app-version=$npm_package_version && cd dist/OneNote-darwin-x64 && zip -ryXq9 ../OneNote-osx-${npm_package_version}.zip OneNote.app",
+    "build:linux": "electron-packager . --overwrite --out=dist --ignore='^media$' --prune --platform=linux --arch=x64 --icon=static/Icon.png --app-bundle-id=com.danielchatfield.onenote-desktop --app-version=$npm_package_version && cd dist/OneNote-linux-x64/ && zip -ryq9 ../OneNote-linux-${npm_package_version}.zip *",
+    "build:windows": "electron-packager . --overwrite --asar --out=dist --ignore='^media$' --prune --platform=win32 --arch=ia32 --icon=static/Icon.ico --version-string.ProductName=$npm_package_productName --app-version=$npm_package_version && cd dist/OneNote-win32-ia32 && zip -ryq9 ../OneNote-windows-${npm_package_version}.zip *"
+  },
+  "files": [
+    "index.js",
+    "browser.js",
+    "browser.css",
+    "static/Icon.icns",
+    "static/Icon.png",
+    "static/Icon.ico"
+  ],
+  "keywords": [
+    "electron-app",
+    "onenote"
+  ],
+  "dependencies": {
+    "electron-config": "^0.1.1",
+    "electron-context-menu": "^0.1.3",
+    "electron-debug": "^1.5.0",
+    "electron-dl": "^1.14.0"
+  },
+  "devDependencies": {
+    "electron": "^1.8.8",
+    "electron-packager": "^12.2.0"
+  }
+}
