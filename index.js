@@ -11,6 +11,7 @@ require('electron-context-menu')();
 
 let mainWindow;
 let isQuitting = false;
+let currentURL = "";
 
 function createMainWindow() {
   const lastWindowState = config.get('lastWindowState');
@@ -37,7 +38,12 @@ function createMainWindow() {
     win.setSheetOffset(40);
   }
 
-  win.loadURL('https://www.onenote.com/notebooks?wdorigin=ondc&auth=1');
+  if (config.get('currentURL').indexOf('onedrive.live.com')!==-1) {
+    win.loadURL(config.get('currentURL'));
+  }else{
+    win.loadURL('https://www.onenote.com/notebooks?wdorigin=ondc&auth=1');
+  }
+  
 
   win.on('close', e => {
     if (isQuitting) {
@@ -94,7 +100,6 @@ app.on('ready', () => {
       {
         label: 'Home', click() {
           mainWindow.loadURL('https://www.onenote.com/notebooks?wdorigin=ondc&auth=1');
-          // electron.shell.openExternal('https://www.onenote.com/notebooks');
         }
       },
       { type: 'separator' },
@@ -137,4 +142,6 @@ app.on('activate', () => {
 
 app.on('before-quit', () => {
   isQuitting = true;
+  currentURL = mainWindow.webContents.getURL();
+  config.set('currentURL', currentURL);
 });
